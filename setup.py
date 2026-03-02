@@ -62,14 +62,17 @@ def upload_source_data(ws, uc_volume_path):
             print(f"  Uploaded {rel_path} -> {remote_path}")
 
 
-def render_and_upload_onboarding_jsons(ws, catalog, schema, uc_volume_path):
-    """Render .template files into .json with real paths, then upload to volume."""
-    subs = {
-        "{uc_catalog_name}": catalog,
-        "{bronze_schema}": schema,
-        "{silver_schema}": schema,
-        "{uc_volume_path}": uc_volume_path,
-    }
+def render_and_upload_onboarding_jsons(ws, bundle_cfg, uc_volume_path):
+    """Render .template files into .json with per-target paths, then upload to volume."""
+    volume_name = "dlt_meta_files"
+    subs = {}
+    for target_name, target_cfg in bundle_cfg["targets"].items():
+        cat = target_cfg["variables"]["catalog_name"]
+        sch = target_cfg["variables"]["schema_name"]
+        vol = f"/Volumes/{cat}/{sch}/{volume_name}/"
+        subs[f"{{catalog_name_{target_name}}}"] = cat
+        subs[f"{{schema_name_{target_name}}}"] = sch
+        subs[f"{{uc_volume_path_{target_name}}}"] = vol
 
     for template_rel in TEMPLATES:
         template_path = os.path.join(SCRIPT_DIR, template_rel)
@@ -129,7 +132,7 @@ def main():
 
     upload_source_data(ws, uc_volume_path)
     upload_config_files(ws, uc_volume_path)
-    render_and_upload_onboarding_jsons(ws, catalog, schema, uc_volume_path)
+    render_and_upload_onboarding_jsons(ws, bundle_cfg, uc_volume_path)
 
     print(f"\nDone. Next:")
     print(f"  databricks bundle deploy --target {args.target} --profile {args.profile}")

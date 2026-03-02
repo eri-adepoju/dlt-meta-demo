@@ -5,8 +5,8 @@
         "source_system": "Manual_Download",
         "source_format": "cloudFiles",
         "source_details": {
-            "source_path_dev": "{uc_volume_path}data/people",
-            "source_path_prod": "{uc_volume_path}data/people",
+            "source_path_dev": "{uc_volume_path_dev}data/people",
+            "source_path_prod": "{uc_volume_path_prod}data/people",
             "source_metadata": {
                 "include_autoloader_metadata_column": "True",
                 "autoloader_metadata_col_name": "source_metadata",
@@ -16,10 +16,10 @@
                 }
             }
         },
-        "bronze_catalog_dev": "{uc_catalog_name}",
-        "bronze_database_dev": "{bronze_schema}",
-        "bronze_catalog_prod": "{uc_catalog_name}",
-        "bronze_database_prod": "{bronze_schema}",
+        "bronze_catalog_dev": "{catalog_name_dev}",
+        "bronze_database_dev": "{schema_name_dev}",
+        "bronze_catalog_prod": "{catalog_name_prod}",
+        "bronze_database_prod": "{schema_name_prod}",
         "bronze_table": "people_bronze",
         "bronze_quarantine_table": "people_bronze_quarantine",
         "bronze_cluster_by": ["country"],
@@ -39,12 +39,12 @@
             "cloudFiles.inferColumnTypes": "true",
             "cloudFiles.rescuedDataColumn": "_rescued_data"
         },
-        "bronze_data_quality_expectations_json_dev": "{uc_volume_path}conf/dqe/dqe_bronze_people.json",
-        "bronze_data_quality_expectations_json_prod": "{uc_volume_path}conf/dqe/dqe_bronze_people.json",
-        "silver_catalog_dev": "{uc_catalog_name}",
-        "silver_database_dev": "{silver_schema}",
-        "silver_catalog_prod": "{uc_catalog_name}",
-        "silver_database_prod": "{silver_schema}",
+        "bronze_data_quality_expectations_json_dev": "{uc_volume_path_dev}conf/dqe/dqe_bronze_people.json",
+        "bronze_data_quality_expectations_json_prod": "{uc_volume_path_prod}conf/dqe/dqe_bronze_people.json",
+        "silver_catalog_dev": "{catalog_name_dev}",
+        "silver_database_dev": "{schema_name_dev}",
+        "silver_catalog_prod": "{catalog_name_prod}",
+        "silver_database_prod": "{schema_name_prod}",
         "silver_table": "people_silver",
         "silver_cluster_by": ["country"],
         "silver_table_properties": {
@@ -58,10 +58,10 @@
             "delta.deletedFileRetentionDuration": "30 days",
             "delta.logRetentionDuration": "30 days"
         },
-        "silver_transformation_json_dev": "{uc_volume_path}conf/silver_queries_people.json",
-        "silver_data_quality_expectations_json_dev": "{uc_volume_path}conf/dqe/dqe_silver_people.json",
-        "silver_transformation_json_prod": "{uc_volume_path}conf/silver_queries_people.json",
-        "silver_data_quality_expectations_json_prod": "{uc_volume_path}conf/dqe/dqe_silver_people.json",
+        "silver_transformation_json_dev": "{uc_volume_path_dev}conf/silver_queries_people.json",
+        "silver_data_quality_expectations_json_dev": "{uc_volume_path_dev}conf/dqe/dqe_silver_people.json",
+        "silver_transformation_json_prod": "{uc_volume_path_prod}conf/silver_queries_people.json",
+        "silver_data_quality_expectations_json_prod": "{uc_volume_path_prod}conf/dqe/dqe_silver_people.json",
         "silver_cdc_apply_changes": {
             "keys": ["id"],
             "sequence_by": "id",
