@@ -147,8 +147,10 @@ people.csv (UC Volume)
 
 Variables are defined in `databricks.yml` and overridden per target:
 
-- `${var.catalog_name}` and `${var.schema_name}` are used in pipeline and job definitions (resolved by DAB at deploy time)
-- Template placeholders (`{uc_catalog_name}`, `{uc_volume_path}`, etc.) are used in onboarding config files (resolved by `setup.py` before uploading to the volume)
+- **DAB variables** (`${var.catalog_name}`, `${var.schema_name}`) are used in pipeline and job YAML definitions, resolved by DAB at deploy time.
+- **Template placeholders** (`{catalog_name_dev}`, `{catalog_name_prod}`, `{uc_volume_path_dev}`, etc.) are used in onboarding config files, resolved by `setup.py` before uploading to the volume.
+
+`setup.py` reads all targets from `databricks.yml` and renders per-environment values into the onboarding templates. This means the dataflowspec tables carry distinct dev and prod paths — DLT-META uses the `env` parameter (`${bundle.target}`) at runtime to select the correct suffix.
 
 This separation exists because DAB resolves `${var.*}` in YAML resources, but DLT-META reads onboarding/DQE/transformation configs at runtime via Spark, which requires concrete UC Volume paths.
 
