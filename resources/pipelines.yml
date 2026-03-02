@@ -1,0 +1,37 @@
+resources:
+  pipelines:
+    bronze_pipeline:
+      name: People - Bronze Pipeline
+      catalog: ${var.catalog_name}
+      schema: ${var.schema_name}
+      development: true
+      photon: true
+      serverless: true
+      libraries:
+        - notebook:
+            path: ${workspace.file_path}/notebooks/init_dlt_meta_pipeline
+
+      configuration:
+        layer: bronze
+        dummy_param: "Hello Bronze"
+        bronze.dataflowspecTable: ${var.catalog_name}.${var.schema_name}.bronze_dataflowspec_table
+        bronze.group: my_people
+        bundle.sourcePath: ${workspace.file_path}/notebooks
+
+    silver_pipeline:
+      name: People - Silver Pipeline
+      catalog: ${var.catalog_name}
+      schema: ${var.schema_name}
+      development: true
+      photon: true
+      serverless: true
+      libraries:
+        - notebook:
+            path: ${workspace.file_path}/notebooks/init_dlt_meta_pipeline
+
+      configuration:
+        layer: silver
+        dummy_param: ""
+        silver.dataflowspecTable: ${var.catalog_name}.${var.schema_name}.silver_dataflowspec_table
+        silver.group: my_people
+        bundle.sourcePath: ${workspace.file_path}/notebooks

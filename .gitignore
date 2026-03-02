@@ -1,0 +1,7 @@
+.databricks/
+.venv/
+__pycache__/
+*.pyc
+conf/*.json
+!conf/silver_queries_people.json
+!conf/dqe/dqe_silver_people.json

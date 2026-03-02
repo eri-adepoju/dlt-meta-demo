@@ -1,0 +1,11 @@
+{
+    "expect_or_drop": {
+        "valid_id": "id IS NOT NULL",
+        "positive_salary": "salary >= 0"
+    },
+    "expect": {
+        "valid_first_name": "first_name IS NOT NULL AND first_name != ''",
+        "valid_ssn_format": "ssn RLIKE '^[0-9]{3}-[0-9]{2}-[0-9]{4}$'",
+        "valid_country": "country IS NOT NULL AND country != ''"
+    }
+}

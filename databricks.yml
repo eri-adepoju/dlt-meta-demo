@@ -1,0 +1,30 @@
+bundle:
+  name: dlt_meta_people_demo
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog_name:
+    description: Unity Catalog name
+  schema_name:
+    description: Schema for all DLT-META tables
+
+targets:
+  dev:
+    mode: development
+    default: true
+    variables:
+      catalog_name: users
+      schema_name: eri_adepoju
+
+  prod:
+    mode: production
+    variables:
+      catalog_name: prod_catalog
+      schema_name: prod_schema
+    workspace:
+      root_path: /Workspace/Shared/${bundle.name}/${bundle.target}
+    permissions:
+      - group_name: users
+        level: CAN_MANAGE

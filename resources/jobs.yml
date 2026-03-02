@@ -1,0 +1,67 @@
+resources:
+  jobs:
+    onboard_people:
+      name: People - Onboard Job
+      description: Onboard DLT-META dataflowspec metadata tables
+
+      tasks:
+        - task_key: onboard_bronze_silver
+          python_wheel_task:
+            package_name: dlt_meta
+            entry_point: run
+            named_parameters:
+              database: ${var.catalog_name}.${var.schema_name}
+              onboarding_file_path: /Volumes/${var.catalog_name}/${var.schema_name}/dlt_meta_files/conf/onboarding_bronze_silver_people.json
+              bronze_dataflowspec_table: bronze_dataflowspec_table
+              silver_dataflowspec_table: silver_dataflowspec_table
+              uc_enabled: "True"
+              import_author: ${workspace.current_user.userName}
+              version: v1
+              onboard_layer: bronze_silver
+              overwrite: "True"
+              env: ${bundle.target}
+          environment_key: default
+
+        - task_key: onboard_silver_fanout
+          python_wheel_task:
+            package_name: dlt_meta
+            entry_point: run
+            named_parameters:
+              database: ${var.catalog_name}.${var.schema_name}
+              onboarding_file_path: /Volumes/${var.catalog_name}/${var.schema_name}/dlt_meta_files/conf/onboarding_silver_fanout_people.json
+              silver_dataflowspec_table: silver_dataflowspec_table
+              uc_enabled: "True"
+              import_author: ${workspace.current_user.userName}
+              version: v1
+              onboard_layer: silver
+              overwrite: "False"
+              env: ${bundle.target}
+          depends_on:
+            - task_key: onboard_bronze_silver
+          environment_key: default
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "1"
+            dependencies:
+              - dlt-meta
+
+    execute_pipelines:
+      name: People - Execute Pipelines Job
+      description: Run bronze then silver DLT-META pipelines
+
+      tasks:
+        - task_key: run_bronze
+          description: Run bronze DLT pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.bronze_pipeline.id}
+            full_refresh: true
+
+        - task_key: run_silver
+          description: Run silver DLT pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.silver_pipeline.id}
+            full_refresh: true
+          depends_on:
+            - task_key: run_bronze

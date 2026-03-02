@@ -1,0 +1,6 @@
+{
+    "expect_or_drop": {
+        "row_has_id": "id IS NOT NULL",
+        "salary_is_number": "salary IS NOT NULL"
+    }
+}
