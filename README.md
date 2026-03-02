@@ -1,6 +1,6 @@
 # DLT-META People Demo
 
-A Databricks Asset Bundle that demonstrates [DLT-META](https://github.com/databrickslabs/dlt-meta) — a metadata-driven framework for Delta Live Tables pipelines. Define your ingestion pipelines via JSON configuration instead of writing pipeline code.
+A Databricks Asset Bundle that demonstrates [DLT-META](https://github.com/databrickslabs/dlt-meta) — a metadata-driven framework for Lakeflow Declarative pipelines. Define your ingestion pipelines via JSON configuration instead of writing pipeline code.
 
 ## What this demo shows
 
